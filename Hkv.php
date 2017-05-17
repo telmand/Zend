@@ -9,18 +9,18 @@ class Custom_Webshop_Frontend_Order extends Webshop_Frontend_Order_Abstract {
      * @access  protected
      */
     protected $db;
-	protected $BTW;
-	protected $shippingCost;
-	protected $totalPriceExVat;
+    protected $BTW;
+    protected $shippingCost;
+    protected $totalPriceExVat;
     protected $pickupLocation;
-	protected $referentie = NULL;
+    protected $referentie = NULL;
     protected $orderType = 'O'; //regular order
     protected $isPaid = false;
     protected $pricePaid = 0.00;
     protected $defaultVat;
     protected $mailTemplate = 'ORDWEB';
     protected $preferredDeliveryDate = '00000000';
-	protected $calculated_price=0;
+    protected $calculated_price=0;
 
     /**
      *
@@ -169,22 +169,22 @@ class Custom_Webshop_Frontend_Order extends Webshop_Frontend_Order_Abstract {
 		$data = serialize($this); 
 		
         $query = " INSERT INTO 	
-					order (
-						user_id,
-						website_code,
-						data,
-						promo_code
-					) VALUES (
-					:user_id ,
-					:website_code ,
-					:data,
-					:promo_code
-					)";
+		            order (
+			            user_id,
+			            website_code,
+			            data,
+			            promo_code
+		            ) VALUES (
+		            :user_id ,
+		            :website_code ,
+		            :data,
+		            :promo_code
+		            )";
 		$stmt = $cms_db->prepare($query);
         $stmt->bindParam('user_id', $this->customer->customerId);
         $stmt->bindParam('website_code', $website_code);
         $stmt->bindParam('data', $data);
-		  $stmt->bindParam('promo_code', $promo_code);
+	    $stmt->bindParam('promo_code', $promo_code);
         $stmt->execute();
 		return $cms_db->lastInsertId();
 	}
@@ -201,8 +201,8 @@ class Custom_Webshop_Frontend_Order extends Webshop_Frontend_Order_Abstract {
 	public function update_real_order_id($order_id , $real_order_id){
 		$cms_db = Zend_Registry::get('dbh');
 		$query = " UPDATE order
-					SET real_order_id = :real_order_id
-					WHERE id = :order_id";		
+		            SET real_order_id = :real_order_id
+		            WHERE id = :order_id";		
 		$stmt = $cms_db->prepare($query);
 		$stmt->bindParam('order_id', $order_id);
 		$stmt->bindParam('real_order_id', $real_order_id);
@@ -212,8 +212,8 @@ class Custom_Webshop_Frontend_Order extends Webshop_Frontend_Order_Abstract {
 	public function retrieve_order_obj($order_id) {
 		$cms_db = Zend_Registry::get('dbh');
 		$query = " SELECT * 
-					FROM order
-					WHERE id=:order_id";
+		            FROM order
+		            WHERE id=:order_id";
 		$stmt = $cms_db->prepare($query);
 		$stmt->bindParam('order_id', $order_id);
 		$stmt->execute();
@@ -312,8 +312,8 @@ class Custom_Webshop_Frontend_Order extends Webshop_Frontend_Order_Abstract {
         if(trim($this->remark) != '' ) {
                 $wokTekst .= $this->remark;
         }
-		$stmt->bindParam('wokPersoonID', $this->customer->customerId );  
-		$stmt->bindParam('wokOrderdatum', $orderDate);
+        $stmt->bindParam('wokPersoonID', $this->customer->customerId );  
+        $stmt->bindParam('wokOrderdatum', $orderDate);
         $stmt->bindParam('wokOrderTijd', $orderTime);
         $stmt->bindParam('wokVerzendwijze', $this->shippingMethod);
         $stmt->bindParam('wokVrachtBerekenen', $calculateShippingCosts);
@@ -324,16 +324,16 @@ class Custom_Webshop_Frontend_Order extends Webshop_Frontend_Order_Abstract {
         $stmt->bindParam('wokBetaalReferentie', $betaalReferentie); //TODO
         $stmt->bindParam('wokGewensteDatum', $preferredDeliveryDate); //TODO
         $stmt->bindParam('wokReferentieKlant', $referentieKlant); 
-		$stmt->bindParam('wokBOOrder', $BOOrder); //TODO
+        $stmt->bindParam('wokBOOrder', $BOOrder); //TODO
         $stmt->bindParam('wokOrderType', $this->orderType); //TODO
         $stmt->bindParam('wokTekst', $wokTekst);
         $stmt->bindParam('wokFormule', $wokFormule); //TODO
-		$stmt->bindParam('wokAfhalenBij', $this->pickupLocation);
+        $stmt->bindParam('wokAfhalenBij', $this->pickupLocation);
         $stmt->bindParam('wokRefNodig', $wokRefNodig); //TODO
         $stmt->bindParam('wokRefGevraagd', $wokRefGevraagd); //TODO
 		
-		$stmt->execute();	
-		$orderId = $this->_db->lastInsertId();
+        $stmt->execute();	
+        $orderId = $this->_db->lastInsertId();
         $this->orderId = $orderId;
 		
 		$productIds = array();
